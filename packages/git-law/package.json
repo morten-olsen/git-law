@@ -1,6 +1,7 @@
 {
   "name": "git-law",
   "version": "0.1.0",
+  "license": "GPL-3.0-only",
   "type": "module",
   "main": "dist/exports.js",
   "scripts": {
@@ -10,25 +11,25 @@
   "bin": {
     "git-law": "./bin/cli.js"
   },
+  "files": [
+    "./bin",
+    "./dist"
+  ],
   "exports": {
     ".": {
       "import": "./dist/exports.js",
       "require": "./dist/exports.js"
     },
     "./configs/*": {
-      "import": "./dist/built-in/configs/*",
-      "require": "./dist/built-in/configs/*"
+      "import": "./dist/built-in/configs/*.js"
     },
     "./rules/*": {
-      "import": "./dist/built-in/rules/*",
-      "require": "./dist/built-in/rules/*"
+      "import": "./dist/built-in/rules/*.js"
     },
     "./actions/*": {
-      "import": "./dist/built-in/rules/*",
-      "require": "./dist/built-in/rules/*"
+      "import": "./dist/built-in/rules/*"
     }
   },
-  "license": "GPL-3.0-only",
   "devDependencies": {
     "@types/lodash": "^4.17.13",
     "@types/micromatch": "^4.0.9",
