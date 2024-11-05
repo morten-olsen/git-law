@@ -39,6 +39,9 @@ autolabeler:
   - label: 'enhancement'
     branch:
       - '/feature\/.+/'
+      - '/feat\/.+/'
+    title:
+      - '/feat:.+/'
 template: |
   ## Changes
 
