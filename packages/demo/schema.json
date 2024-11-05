@@ -1,0 +1,186 @@
+{
+  "$ref": "#/definitions/github-config",
+  "definitions": {
+    "github-config": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "configs": {
+          "type": "object",
+          "properties": {
+            "basics": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "isTemplate": {
+                  "type": "boolean"
+                },
+                "defaultBranch": {
+                  "type": "string"
+                },
+                "visibility": {
+                  "type": "string",
+                  "enum": [
+                    "public",
+                    "private"
+                  ]
+                },
+                "features": {
+                  "type": "object",
+                  "properties": {
+                    "projects": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "issues": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "wiki": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "enabled"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "pullRequests": {
+                  "type": "object",
+                  "properties": {
+                    "mergeCommits": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "commit": {
+                          "type": "object",
+                          "properties": {
+                            "title": {
+                              "type": "string",
+                              "enum": [
+                                "PR_TITLE",
+                                "MERGE_MESSAGE"
+                              ]
+                            },
+                            "body": {
+                              "type": "string",
+                              "enum": [
+                                "PR_TITLE",
+                                "PR_BODY",
+                                "BLANK"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "title",
+                            "body"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "rebaseMerge": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "squashMerge": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "commit": {
+                          "type": "object",
+                          "properties": {
+                            "title": {
+                              "type": "string",
+                              "enum": [
+                                "PR_TITLE",
+                                "COMMIT_OR_PR_TITLE"
+                              ]
+                            },
+                            "body": {
+                              "type": "string",
+                              "enum": [
+                                "PR_BODY",
+                                "COMMIT_MESSAGES",
+                                "BLANK"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "title",
+                            "body"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "suggestUpdatingPullRequestBranches": {
+                  "type": "boolean"
+                },
+                "allowAutoMerge": {
+                  "type": "boolean"
+                },
+                "deleteBranchOnMerge": {
+                  "type": "boolean"
+                },
+                "archived": {
+                  "type": "boolean"
+                },
+                "allowForking": {
+                  "type": "boolean"
+                },
+                "webCommitRequireSignOff": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

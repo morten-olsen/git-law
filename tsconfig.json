@@ -1,0 +1,8 @@
+{
+  "include": [],
+  "references": [
+    {
+      "path": "./packages/git-law"
+    }
+  ]
+}

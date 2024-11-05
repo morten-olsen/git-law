@@ -5,7 +5,6 @@ import { Config } from '../config/config.js';
 
 type RepoInstanceOptions = {
   repoConfig: Record<string, unknown>;
-  exists: boolean;
   config: Config;
   owner: string;
   name: string;
@@ -46,10 +45,6 @@ class Repo {
     return this.#options.repoConfig;
   }
 
-  public get exists() {
-    return this.#options.exists;
-  }
-
   public getConfig = async <const TName extends string, TSchema extends ZodSchema>(
     config: RepoConfigSection<TName, TSchema>,
   ) => {
@@ -57,11 +52,9 @@ class Repo {
       const { repoConfig: configs } = this.#options;
       const requestedRaw = configs[config.name];
       const requested = await config.schema.parseAsync(requestedRaw);
-      const actual = this.exists
-        ? await config.get({
-            repo: this,
-          })
-        : undefined;
+      const actual = await config.get({
+        repo: this,
+      });
       this.#cache.set(config, {
         requested,
         actual,

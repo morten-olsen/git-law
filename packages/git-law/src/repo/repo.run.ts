@@ -1,6 +1,6 @@
 import { Config } from '../config/config.js';
 import { Repo } from './repo.js';
-import { applyConfig, onInvalid, onValid, validateConfig } from './repo.utils.js';
+import { applyConfig, getConfig, onInvalid, onValid, validateConfig } from './repo.utils.js';
 
 type RepoRunOptions = {
   repo: Repo;
@@ -12,6 +12,10 @@ const applyRepoConfig = async ({ repo, config }: RepoRunOptions) => {
 
 const validateRepoConfig = async ({ repo, config }: RepoRunOptions) => {
   return await validateConfig({ repo, config });
+};
+
+const getRepoConfig = async ({ repo, config }: RepoRunOptions) => {
+  return await getConfig({ repo, config });
 };
 
 const fullRepoRun = async ({ repo, config }: RepoRunOptions) => {
@@ -56,4 +60,4 @@ const runAllRepos = async ({ repos, config }: RunAllReposOptions) => {
   return results;
 };
 
-export { applyRepoConfig, validateRepoConfig, fullRepoRun, runAllRepos };
+export { getRepoConfig, applyRepoConfig, validateRepoConfig, fullRepoRun, runAllRepos };
