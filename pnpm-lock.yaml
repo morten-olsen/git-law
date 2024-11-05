@@ -56,6 +56,13 @@ importers:
       git-law:
         specifier: workspace:*
         version: link:../git-law
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
+    devDependencies:
+      '@types/node':
+        specifier: ^22.8.7
+        version: 22.8.7
 
   packages/git-law:
     dependencies:

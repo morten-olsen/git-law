@@ -17,7 +17,7 @@ export { config };
 ```
 
 ```bash
-npx git-law remote get-config morten-olsen gitlaw
+npx git-law remote get-config morten-olsen/git-law
 ```
 
 ```bash
@@ -38,9 +38,9 @@ npx git-law repo-config schema -o schema.json
 ```
 
 ```bash
-npx git-law local validate repo-config.json
+npx git-law local validate repo-config.json morten-olsen/git-law
 ```
 
 ```bash
-npx git-law local apply repo-config.json --owner morten-olsen --name git-law
+npx git-law local apply repo-config.json morten-olsen/git-law
 ```

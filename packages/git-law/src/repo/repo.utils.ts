@@ -1,7 +1,8 @@
-import { ZodError } from 'zod';
+import { ZodError, ZodSchema } from 'zod';
 import { Config } from '../config/config.js';
 import { RuleValidation } from '../rule/rule.validation.js';
 import { Repo } from './repo.js';
+import { RepoConfigSection } from '../exports.js';
 
 type GetConfigOptions = {
   repo: Repo;
@@ -69,6 +70,10 @@ const validateConfig = async ({ repo, config }: ApplyConfigOptions) => {
       repo,
       config: ruleConfig,
       validation,
+      getConfig: async <TSchema extends ZodSchema>(config: RepoConfigSection<string, TSchema>) => {
+        const result = await repo.getConfig(config);
+        return result.predicted ?? result.requested ?? result.actual;
+      },
     });
   }
   return {

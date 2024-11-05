@@ -73,7 +73,7 @@ const basic = createRepoConfigSection('basics', {
       repo: repo.name,
     });
     return {
-      owner: response.owner,
+      owner: response.owner.login,
       repo: response.name,
       description: response.description || undefined,
       visibility: response.visibility as 'public' | 'private',
@@ -139,8 +139,10 @@ const basic = createRepoConfigSection('basics', {
       allow_forking: config.allowForking,
       web_commit_signoff_required: config.webCommitRequireSignOff,
     };
+
+    await repo.client.rest.repos.update(params);
     // TODO: fix token
-    const response = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.name}`, {
+    /*const response = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.name}`, {
       method: 'PATCH',
       headers: {
         Authorization: `token ${process.env.GITHUB_TOKEN}`,
@@ -154,7 +156,7 @@ const basic = createRepoConfigSection('basics', {
       console.error(response.status);
       console.error(await response.text());
       throw new Error(`Failed to update repository ${repo.owner}/${repo.name}`);
-    }
+    }*/
   },
   predict: async ({ actual, requested }) => {
     return merge(actual, requested);

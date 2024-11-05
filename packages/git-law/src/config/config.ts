@@ -8,6 +8,7 @@ import { ZodSchema } from 'zod';
 type Configuration = {
   github?: {
     token?: string;
+    file?: string;
   };
   repos?: {
     include?: string[];
@@ -21,6 +22,7 @@ type Configuration = {
 type Config = {
   github: {
     token?: string;
+    file: string;
   };
   repos: {
     include?: string[];
@@ -38,6 +40,10 @@ type Config = {
 };
 
 type LoadConfigOptions = {
+  github?: {
+    token?: string;
+    file?: string;
+  };
   repos?: {
     include?: string[];
     exclude?: string[];
@@ -93,10 +99,12 @@ const loadConfig = async (location: string, options: LoadConfigOptions = {}): Pr
       };
     }) || [],
   );
-  const token = config.github?.token || process.env.GITHUB_TOKEN;
+  const token = options.github?.token || config.github?.token || process.env.GITHUB_TOKEN;
+  const file = options.github?.file || config.github?.file || '.github/github-config.json';
   return {
     github: {
       token,
+      file,
     },
     repos: {
       include: options.repos?.include || config.repos?.include,

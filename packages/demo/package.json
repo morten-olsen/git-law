@@ -8,6 +8,10 @@
   },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "git-law": "workspace:*"
+    "git-law": "workspace:*",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.7"
   }
 }
