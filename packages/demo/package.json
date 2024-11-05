@@ -1,0 +1,13 @@
+{
+  "name": "@git-law/demo",
+  "private": true,
+  "version": "1.0.0",
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "update-schema": "pnpm git-law repo-config schema -o schema.json"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "git-law": "workspace:*"
+  }
+}

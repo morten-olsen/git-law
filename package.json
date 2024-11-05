@@ -6,6 +6,7 @@
   "packageManager": "pnpm@9.12.2",
   "scripts": {
     "build": "turbo build",
+    "build:watch": "tsc --build --watch",
     "lint": "eslint packages/*/src"
   },
   "devDependencies": {

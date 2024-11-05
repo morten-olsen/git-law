@@ -1,15 +1,17 @@
 import { program } from 'commander';
-import YAML from 'yaml';
 import { loadConfig } from '../config/config.js';
-import { applyRepoConfig, validateRepoConfig } from '../repo/repo.run.js';
+import { applyRepoConfig, getRepoConfig, validateRepoConfig } from '../repo/repo.run.js';
 import { Repo } from '../repo/repo.js';
 import { readFile, writeFile } from 'fs/promises';
 import { getRepoConfigSchema } from '../config/config.utils.js';
 import { resolve } from 'path';
+import { inspect } from 'util';
 
-program.option('-c,--config <config>');
+program.option('-c,--config <config>', 'Config file', 'gitlaw.config.mjs');
 
-program
+const localCmd = program.command('local');
+
+localCmd
   .command('validate')
   .argument('<file>')
   .option('-n,--name <name>')
@@ -17,9 +19,9 @@ program
   .action(async (file) => {
     const { config: configLocation, name, owner } = program.opts();
     const config = await loadConfig(configLocation);
-    const repoConfig = YAML.parse(await readFile(file, 'utf8'));
+    const repoConfig = JSON.parse(await readFile(file, 'utf8'));
     const repo = new Repo({
-      repoConfig,
+      repoConfig: repoConfig.configs || {},
       name,
       owner,
       config,
@@ -40,17 +42,18 @@ program
     }
   });
 
-program
+const localApplyCmd = localCmd
   .command('apply')
   .argument('<file>')
   .option('-n,--name <name>')
   .option('-o,--owner <owner>')
   .action(async (file) => {
-    const { config: configLocation, name, owner } = program.opts();
+    const { config: configLocation } = program.opts();
+    const { owner, name } = localApplyCmd.opts();
     const config = await loadConfig(configLocation);
-    const repoConfig = YAML.parse(await readFile(file, 'utf8'));
+    const repoConfig = JSON.parse(await readFile(file, 'utf8'));
     const repo = new Repo({
-      repoConfig,
+      repoConfig: repoConfig.configs || {},
       name,
       owner,
       config,
@@ -63,8 +66,38 @@ program
     console.log('Done!');
   });
 
-const getSchemaCmd = program
-  .command('get-repo-schema')
+const remote = program.command('remote');
+
+remote
+  .command('get-config')
+  .argument('<owner>')
+  .argument('<repo>')
+  .action(async (owner, name) => {
+    const { config: configLocation } = program.opts();
+    const config = await loadConfig(configLocation);
+    const repo = new Repo({
+      repoConfig: {},
+      name,
+      owner,
+      config,
+      exists: false,
+    });
+    const result = await getRepoConfig({
+      config,
+      repo,
+    });
+    console.log(
+      inspect(result, {
+        depth: null,
+        colors: true,
+      }),
+    );
+  });
+
+const repoConfigCmd = program.command('repo-config');
+
+const getSchemaCmd = repoConfigCmd
+  .command('schema')
   .option('-o,--out <out>')
   .action(async () => {
     const { config: configLocation } = program.opts();

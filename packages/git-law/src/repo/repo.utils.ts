@@ -3,6 +3,21 @@ import { Config } from '../config/config.js';
 import { RuleValidation } from '../rule/rule.validation.js';
 import { Repo } from './repo.js';
 
+type GetConfigOptions = {
+  repo: Repo;
+  config: Config;
+};
+const getConfig = async ({ repo, config }: GetConfigOptions) => {
+  return Object.fromEntries(
+    await Promise.all(
+      config.sections.map(async (section) => {
+        const result = await section.get({ repo });
+        return [section.name, result];
+      }),
+    ),
+  );
+};
+
 type ApplyConfigOptions = {
   repo: Repo;
   config: Config;
@@ -15,7 +30,10 @@ const applyConfig = async ({ repo, config }: ApplyConfigOptions) => {
     const sectionConfig = repo.configs[section.name];
     if (sectionConfig) {
       const parsed = await section.schema.parseAsync(sectionConfig);
-      await section.set(parsed);
+      await section.set({
+        repo,
+        config: parsed,
+      });
     }
   }
 };
@@ -95,4 +113,4 @@ const onInvalid = async ({ repo, config }: OnInvalidConfigOptions) => {
   }
 };
 
-export { applyConfig, validateConfig, onValid, onInvalid };
+export { getConfig, applyConfig, validateConfig, onValid, onInvalid };

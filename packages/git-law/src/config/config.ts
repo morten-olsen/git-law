@@ -108,4 +108,4 @@ const loadConfig = async (location: string, options: LoadConfigOptions = {}): Pr
   };
 };
 
-export { loadConfig, type Config };
+export { loadConfig, type Config, type Configuration };
