@@ -20,7 +20,7 @@ type ConfigCacheItem = {
 class Repo {
   #options: RepoInstanceOptions;
   #client: Octokit;
-  #cache: Map<RepoConfigSection<string, any>, ConfigCacheItem>;
+  #cache: Map<unknown, ConfigCacheItem>;
 
   constructor(options: RepoInstanceOptions) {
     this.#options = options;

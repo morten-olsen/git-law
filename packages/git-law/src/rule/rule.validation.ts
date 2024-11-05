@@ -1,7 +1,8 @@
+import { ZodSchema } from 'zod';
 import { Rule } from './rule.js';
 
 type RuleValidationOptions = {
-  rule: Rule<string, any>;
+  rule: Rule<string, ZodSchema>;
 };
 
 type RuleViolation = {

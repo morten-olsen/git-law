@@ -9,6 +9,9 @@ type ApplyConfigOptions = {
 };
 const applyConfig = async ({ repo, config }: ApplyConfigOptions) => {
   for (const section of config.sections) {
+    if (!section.set) {
+      continue;
+    }
     const sectionConfig = repo.configs[section.name];
     if (sectionConfig) {
       const parsed = await section.schema.parseAsync(sectionConfig);

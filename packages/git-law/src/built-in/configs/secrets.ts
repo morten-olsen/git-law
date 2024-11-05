@@ -18,7 +18,6 @@ const secrets = createRepoConfigSection('secrets', {
       repo: repoSecrets,
     };
   },
-  set: async () => {},
 });
 
 export { secrets };

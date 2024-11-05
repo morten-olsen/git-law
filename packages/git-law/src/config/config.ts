@@ -13,9 +13,9 @@ type Configuration = {
     include?: string[];
     exclude?: string[];
   };
-  configs?: (string | RepoConfigSection<string, any>)[];
-  rules: ([string, unknown] | [Rule<string, any>, unknown])[];
-  actions: ([string, unknown] | [Action<any>, unknown])[];
+  configs?: (string | RepoConfigSection<string, ZodSchema>)[];
+  rules: ([string, unknown] | [Rule<string, ZodSchema>, unknown])[];
+  actions: ([string, unknown] | [Action<ZodSchema>, unknown])[];
 };
 
 type Config = {
@@ -29,11 +29,11 @@ type Config = {
   sections: RepoConfigSection<string, ZodSchema>[];
   rules: {
     rule: Rule<string, ZodSchema>;
-    config: any;
+    config: unknown;
   }[];
   actions: {
     action: Action<ZodSchema>;
-    config: any;
+    config: unknown;
   }[];
 };
 

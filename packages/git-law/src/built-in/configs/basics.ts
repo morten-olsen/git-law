@@ -76,7 +76,7 @@ const basic = createRepoConfigSection('basics', {
       owner: response.owner,
       repo: response.name,
       description: response.description || undefined,
-      visibility: response.visibility as any,
+      visibility: response.visibility as 'public' | 'private',
       features: {
         wiki: {
           enabled: response.has_wiki,

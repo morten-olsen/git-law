@@ -4,6 +4,12 @@ type ScannerOptions = {
   config: Config;
 };
 
-class Scanner {}
+class Scanner {
+  _options: ScannerOptions;
+
+  constructor(options: ScannerOptions) {
+    this._options = options;
+  }
+}
 
 export { Scanner };

@@ -15,7 +15,7 @@ type RepoConfigSection<TName extends string, TSchema extends ZodSchema> = {
   schema: TSchema;
   name: TName;
   get: (ctx: RepoConfigSectionContext<TSchema>) => Promise<z.infer<TSchema>>;
-  set: (ctx: RepoConfigSectionContext<TSchema>) => Promise<void>;
+  set?: (ctx: RepoConfigSectionContext<TSchema>) => Promise<void>;
   predict?: (options: PredictOptions<TSchema>) => Promise<z.infer<TSchema>>;
 };
 
