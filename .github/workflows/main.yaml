@@ -10,6 +10,7 @@ env:
   release_channel: latest
   DO_NOT_TRACK: '1'
   NODE_VERSION: '20.x'
+  NODE_REGISTRY: 'https://registry.npmjs.org'
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 permissions:
@@ -26,6 +27,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '${{ env.NODE_VERSION }}'
+          registry-url: '${{ env.NODE_REGISTRY }}'
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
@@ -98,6 +100,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '${{ env.NODE_VERSION }}'
+          registry-url: '${{ env.NODE_REGISTRY }}'
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
@@ -121,4 +124,4 @@ jobs:
           node ./scripts/set-version.mjs $(git describe --tag --abbrev=0)
           pnpm publish -r --no-git-checks
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
