@@ -10,12 +10,9 @@
         "configs": {
           "type": "object",
           "properties": {
-            "basics": {
+            "github/general": {
               "type": "object",
               "properties": {
-                "description": {
-                  "type": "string"
-                },
                 "isTemplate": {
                   "type": "boolean"
                 },
@@ -171,6 +168,33 @@
                 },
                 "webCommitRequireSignOff": {
                   "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            },
+            "github/info": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "homepage": {
+                  "type": "string"
+                },
+                "topics": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "my-configs/package.json": {
+              "type": "object",
+              "properties": {
+                "license": {
+                  "type": "string"
                 }
               },
               "additionalProperties": false
