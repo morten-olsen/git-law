@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { createRule } from '../../rule/rule.js';
-import basic from '../configs/basics.js';
+import general from '../configs/general.js';
 
 const visibilityTypes = z.enum(['public', 'private']);
 
@@ -11,7 +11,7 @@ const schema = z.object({
 const requireVisibility = createRule('require-visibility', {
   schema,
   validate: async ({ repo, config, validation }) => {
-    const basics = await repo.getConfig(basic);
+    const basics = await repo.getConfig(general);
     const requestedVisibility = basics.requested?.visibility ?? basics.actual?.visibility;
 
     if (!requestedVisibility) {

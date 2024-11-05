@@ -65,7 +65,7 @@ const schema = z.object({
   webCommitRequireSignOff: z.boolean().optional(),
 });
 
-const basic = createRepoConfigSection('basics', {
+const general = createRepoConfigSection('github/general', {
   schema,
   get: async ({ repo }) => {
     const { data: response } = await repo.client.rest.repos.get({
@@ -140,27 +140,11 @@ const basic = createRepoConfigSection('basics', {
     };
 
     await repo.client.rest.repos.update(params);
-    // TODO: fix token
-    /*const response = await fetch(`https://api.github.com/repos/${repo.owner}/${repo.name}`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: `token ${process.env.GITHUB_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(params),
-    });
-
-    if (!response.ok) {
-      console.error(`Failed to update repository ${repo.owner}/${repo.name}`);
-      console.error(response.status);
-      console.error(await response.text());
-      throw new Error(`Failed to update repository ${repo.owner}/${repo.name}`);
-    }*/
   },
   predict: async ({ actual, requested }) => {
     return merge(actual, requested);
   },
 });
 
-export { basic };
-export default basic;
+export { general as basic };
+export default general;

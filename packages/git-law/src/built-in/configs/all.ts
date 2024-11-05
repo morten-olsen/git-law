@@ -1,5 +1,5 @@
-import basics from './basics.js';
+import general from './general.js';
 
-const all = [basics];
+const all = [general];
 
 export default all;
