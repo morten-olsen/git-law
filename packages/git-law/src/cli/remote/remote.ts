@@ -17,7 +17,6 @@ const createRemote = (cmd: Command) => {
         name,
         owner,
         config,
-        exists: false,
       });
       const result = await getRepoConfig({
         config,

@@ -1,21 +1,22 @@
 import 'dotenv/config';
 import all from 'git-law/configs/all';
-import requireTsConfigExtends from './rules/require-tsconfig-extends.mjs';
-import tsconfig from './configs/tsconfig.mjs';
+import packageJsonConfig from './configs/packagejson.mjs';
+import packageJsonLicenseRule from './rules/packagejson/license.mjs';
 
 /** @type {import('git-law').Configuration} */
 const config = {
   github: {
     token: process.env.GITHUB_TOKEN,
   },
-  configs: [...all, tsconfig],
+  configs: [...all, packageJsonConfig],
   rules: [
-    // [
-    //   requireTsConfigExtends,
-    //   {
-    //     shouldExtend: 'foobar',
-    //   },
-    // ],
+    [
+      packageJsonLicenseRule,
+      {
+        mustSpecifyLicense: true,
+        allowedLicenses: ['GPL-3.0-only'],
+      },
+    ],
   ],
 };
 

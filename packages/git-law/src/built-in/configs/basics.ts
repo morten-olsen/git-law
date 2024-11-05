@@ -109,7 +109,6 @@ const basic = createRepoConfigSection('basics', {
     };
   },
   set: async ({ config, repo }) => {
-    console.log('foo', config);
     if (!config) {
       return;
     }

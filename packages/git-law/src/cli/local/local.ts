@@ -19,7 +19,6 @@ const createLocal = (cmd: Command) => {
         name,
         owner,
         config,
-        exists: false,
       });
       const result = await validateRepoConfig({
         config,
@@ -50,7 +49,6 @@ const createLocal = (cmd: Command) => {
         name,
         owner,
         config,
-        exists: false,
       });
       await applyRepoConfig({
         config,

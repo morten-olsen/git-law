@@ -1,11 +1,12 @@
 ```bash
 npm init -y
-npm add git-law
+npm add git-law dotenv
 ```
 
 `gitlaw.config.mjs`
 
 ```js
+import 'dotenv/config';
 import all from 'git-law/configs/all';
 
 /** @type {import('git-law').Configuration} */

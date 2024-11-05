@@ -3,11 +3,11 @@ import { createRepoConfigSection } from 'git-law';
 
 const schema = z
   .object({
-    extends: z.string().optional(),
+    license: z.string().optional(),
   })
   .optional();
 
-export default createRepoConfigSection('my-configs/tsconfig', {
+export default createRepoConfigSection('my-configs/package.json', {
   schema,
   get: async ({ repo }) => {
     const client = repo.client;
@@ -15,7 +15,7 @@ export default createRepoConfigSection('my-configs/tsconfig', {
       .getContent({
         repo: repo.name,
         owner: repo.owner,
-        path: 'tsconfig.json',
+        path: 'package.json',
       })
       .then((result) => {
         if (result.data.type !== 'file') {
