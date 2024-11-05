@@ -3,7 +3,6 @@ import merge from 'lodash/merge.js';
 import { createRepoConfigSection } from '../../config/repo/repo.section.js';
 
 const schema = z.object({
-  description: z.string().optional(),
   isTemplate: z.boolean().optional(),
   defaultBranch: z.string().optional(),
   visibility: z.union([z.literal('public'), z.literal('private')]).optional(),
@@ -75,7 +74,6 @@ const general = createRepoConfigSection('github/general', {
     return {
       owner: response.owner.login,
       repo: response.name,
-      description: response.description || undefined,
       visibility: response.visibility as 'public' | 'private',
       features: {
         wiki: {
@@ -115,7 +113,6 @@ const general = createRepoConfigSection('github/general', {
     const params = {
       owner: repo.owner,
       repo: repo.name,
-      description: config.description,
       visibility: config.visibility,
       has_wiki: config.features?.wiki?.enabled,
       has_issues: config.features?.issues?.enabled,

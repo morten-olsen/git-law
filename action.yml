@@ -1,0 +1,18 @@
+name: 'GitLaw'
+description: 'Run GitLaw'
+inputs:
+  include:
+    description: 'repo glob to run action on'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Install GitLaw
+      run: npm i -g git-law
+      shell: bash
+
+    - name: Run GitLaw
+      run: git-law remote apply-glob $INCLUDE
+      shell: bash
+      env:
+        REPO: '${{ inputs.include }}'

@@ -1,7 +1,7 @@
 {
   "$schema": "./schema.json",
   "configs": {
-    "basics": {
+    "github/info": {
       "description": "Hello World"
     }
   }
