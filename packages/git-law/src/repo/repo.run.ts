@@ -1,6 +1,8 @@
+import { dirname, resolve } from 'path';
 import { Config } from '../config/config.js';
 import { Repo } from './repo.js';
 import { applyConfig, getConfig, onInvalid, onValid, validateConfig } from './repo.utils.js';
+import { mkdir, writeFile } from 'fs/promises';
 
 type RepoRunOptions = {
   repo: Repo;
@@ -11,31 +13,43 @@ const applyRepoConfig = async ({ repo, config }: RepoRunOptions) => {
 };
 
 const validateRepoConfig = async ({ repo, config }: RepoRunOptions) => {
-  return await validateConfig({ repo, config });
+  const validation = await validateConfig({ repo, config });
+  for (const reporter of config.reporters) {
+    const result = await reporter.create([
+      {
+        repo,
+        result: validation,
+      },
+    ]);
+    if (result.console) {
+      process.stdout.write(result.console);
+    }
+    if (result.files) {
+      for (const [location, content] of Object.entries(result.files)) {
+        const target = resolve('reports', location);
+        await mkdir(dirname(target), { recursive: true });
+        await writeFile(target, content);
+      }
+    }
+  }
 };
 
 const getRepoConfig = async ({ repo, config }: RepoRunOptions) => {
   return await getConfig({ repo, config });
 };
 
-const fullRepoRun = async ({ repo, config }: RepoRunOptions) => {
-  const validate = await validateRepoConfig({
+const runRepo = async ({ repo, config }: RepoRunOptions) => {
+  const validate = await validateConfig({
     repo,
     config,
   });
-  const hasParseErrors = validate.parse.some((parse) => !parse.success);
-  const hasRuleViolations = validate.validations.some((validation) => validation.hasViolation);
-  if (!hasParseErrors && !hasRuleViolations) {
+  if (!validate.hasParseErrors && !validate.hasRuleViolations) {
     await applyRepoConfig({ repo, config });
     await onValid({ repo, config });
-  } else if (hasRuleViolations) {
+  } else if (validate.hasRuleViolations) {
     await onInvalid({ repo, config });
   }
-  return {
-    validate,
-    hasRuleViolations,
-    hasParseErrors,
-  };
+  return validate;
 };
 
 type RunAllReposOptions = {
@@ -43,21 +57,37 @@ type RunAllReposOptions = {
   config: Config;
 };
 
-const runAllRepos = async ({ repos, config }: RunAllReposOptions) => {
+type ValidationResponse = Awaited<ReturnType<typeof validateConfig>>;
+
+const runRepos = async ({ repos, config }: RunAllReposOptions) => {
   const results: {
     repo: Repo;
-    result: Awaited<ReturnType<typeof fullRepoRun>>;
+    result: ValidationResponse;
   }[] = [];
 
   for (const repo of repos) {
-    const result = await fullRepoRun({ repo, config });
+    const result = await runRepo({ repo, config });
     results.push({
       repo,
       result,
     });
   }
 
+  for (const reporter of config.reporters) {
+    const result = await reporter.create(results);
+    if (result.console) {
+      process.stdout.write(result.console);
+    }
+    if (result.files) {
+      for (const [location, content] of Object.entries(result.files)) {
+        const target = resolve('reports', location);
+        await mkdir(dirname(target), { recursive: true });
+        await writeFile(target, content);
+      }
+    }
+  }
+
   return results;
 };
 
-export { getRepoConfig, applyRepoConfig, validateRepoConfig, fullRepoRun, runAllRepos };
+export { getRepoConfig, applyRepoConfig, validateRepoConfig, runRepo, runRepos, type ValidationResponse };

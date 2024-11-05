@@ -26,6 +26,10 @@ class RuleValidation {
     return this.#options.rule;
   }
 
+  public get violations() {
+    return this.#violations;
+  }
+
   public addViolation = (violation: RuleViolation) => {
     this.#violations.push(violation);
   };

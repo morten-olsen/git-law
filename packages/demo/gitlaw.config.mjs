@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import all from 'git-law/configs/all';
+import markdown from 'git-law/reporters/markdown';
 import packageJsonConfig from './configs/packagejson.mjs';
 import packageJsonLicenseRule from './rules/packagejson/license.mjs';
 
@@ -18,6 +19,7 @@ const config = {
       },
     ],
   ],
+  reporters: [markdown],
 };
 
 export { config };

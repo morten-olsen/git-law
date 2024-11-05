@@ -20,19 +20,10 @@ const createLocal = (cmd: Command) => {
         owner,
         config,
       });
-      const result = await validateRepoConfig({
+      await validateRepoConfig({
         config,
         repo,
       });
-      console.log('Configs');
-      result.parse.forEach((parse) => {
-        console.log(`${parse.success}: ${parse.section}`);
-      });
-
-      console.log('Rules');
-      for (const validation of result.validations) {
-        console.log(`${!validation.hasViolation}: ${validation.rule.name}`);
-      }
     });
 
   cmd
@@ -54,7 +45,6 @@ const createLocal = (cmd: Command) => {
         config,
         repo,
       });
-      console.log('Done!');
     });
 };
 

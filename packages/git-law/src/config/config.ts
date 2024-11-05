@@ -4,6 +4,7 @@ import { RepoConfigSection } from './repo/repo.section.js';
 import { readFile } from 'fs/promises';
 import { Action } from '../actions/actions.js';
 import { ZodSchema } from 'zod';
+import { Reporter } from '../reporter/reporter.js';
 
 type Configuration = {
   github?: {
@@ -15,6 +16,7 @@ type Configuration = {
     exclude?: string[];
   };
   configs?: (string | RepoConfigSection<string, ZodSchema>)[];
+  reporters?: (string | Reporter)[];
   rules: ([string, unknown] | [Rule<string, ZodSchema>, unknown])[];
   actions: ([string, unknown] | [Action<ZodSchema>, unknown])[];
 };
@@ -37,6 +39,7 @@ type Config = {
     action: Action<ZodSchema>;
     config: unknown;
   }[];
+  reporters: Reporter[];
 };
 
 type LoadConfigOptions = {
@@ -99,6 +102,15 @@ const loadConfig = async (location: string, options: LoadConfigOptions = {}): Pr
       };
     }) || [],
   );
+  const reporters: Config['reporters'] = await Promise.all(
+    config.reporters?.map(async (reporter) => {
+      if (typeof reporter === 'string') {
+        const response = await import(resolve(reporter));
+        return response.reporter || response.default;
+      }
+      return reporter;
+    }) || [],
+  );
   const token = options.github?.token || config.github?.token || process.env.GITHUB_TOKEN;
   const file = options.github?.file || config.github?.file || '.github/github-config.json';
   return {
@@ -113,6 +125,7 @@ const loadConfig = async (location: string, options: LoadConfigOptions = {}): Pr
     sections,
     rules,
     actions,
+    reporters,
   };
 };
 

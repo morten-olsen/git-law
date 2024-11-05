@@ -76,7 +76,11 @@ const validateConfig = async ({ repo, config }: ApplyConfigOptions) => {
       },
     });
   }
+  const hasParseErrors = parse.some((parse) => !parse.success);
+  const hasRuleViolations = validations.some((validation) => validation.hasViolation);
   return {
+    hasRuleViolations,
+    hasParseErrors,
     validations,
     parse,
   };
