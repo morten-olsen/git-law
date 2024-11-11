@@ -24,6 +24,9 @@ type ApplyConfigOptions = {
   config: Config;
 };
 const applyConfig = async ({ repo, config }: ApplyConfigOptions) => {
+  if (!repo.configs) {
+    return;
+  }
   for (const section of config.sections) {
     if (!section.set) {
       continue;
@@ -47,6 +50,16 @@ const validateConfig = async ({ repo, config }: ApplyConfigOptions) => {
     data?: unknown;
     error?: ZodError;
   }[] = [];
+
+  if (!repo.configs) {
+    return {
+      hasConfig: false,
+      hasRuleViolations: false,
+      hasParseErrors: false,
+      validations: [],
+      parse: [],
+    };
+  }
 
   for (const section of config.sections) {
     const sectionConfig = repo.configs[section.name];
@@ -79,6 +92,7 @@ const validateConfig = async ({ repo, config }: ApplyConfigOptions) => {
   const hasParseErrors = parse.some((parse) => !parse.success);
   const hasRuleViolations = validations.some((validation) => validation.hasViolation);
   return {
+    hasConfig: true,
     hasRuleViolations,
     hasParseErrors,
     validations,

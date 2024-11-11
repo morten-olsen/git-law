@@ -42,7 +42,7 @@ class Repo {
   }
 
   public get configs() {
-    return this.#options.repoConfig || {};
+    return this.#options.repoConfig;
   }
 
   public loadConfig = async () => {
@@ -64,6 +64,7 @@ class Repo {
     if (content) {
       this.#options.config = content;
     }
+    return !!content;
   };
 
   public getConfig = async <const TName extends string, TSchema extends ZodSchema>(
